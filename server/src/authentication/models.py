@@ -27,6 +27,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.first_name = first_name
         user.last_name = last_name
+        user.is_staff = False
         user.is_admin = False
         user.is_superuser = False
         user.save(using=self._db)
@@ -42,6 +43,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.first_name = first_name
         user.last_name = last_name
+        user.is_staff = True
         user.is_admin = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -73,6 +75,7 @@ class User(AbstractUser):
     username = None
     created_at = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField()
+    is_staff = models.BooleanField()
     is_superuser = models.BooleanField()
 
     objects = UserManager()

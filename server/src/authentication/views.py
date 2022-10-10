@@ -87,7 +87,10 @@ class ValidateRegisterView(APIView):
                 raise ValidationError
 
             validate_email(email)
-            Util.validate_passwords(request.data["password"], request.data.pop("rePassword"))
+            Util.validate_passwords(
+                request.data["password"],
+                request.data.pop("rePassword")
+            )
 
             user_data["email"] = email
             user_data["password"] = request.data["password"]
@@ -98,7 +101,6 @@ class ValidateRegisterView(APIView):
             raise ValidationError from exception
 
         user = User.objects.create_user(**user_data)
-        user.save()
 
         response = Response({"message": "Registered"})
         response = Util.set_jwt(
@@ -290,10 +292,13 @@ class UserView(APIView):
         if not User.objects.filter(email=payload["id"]).exists():
             raise AuthenticationFailed
 
-        user = User.objects.get(email=payload["id"])
+        user = User.objects.get(email=payload["id"]).__dict__
         user_data = {
-            key: val for key, val in user.__dict__.items()
-            if key in ("email", "first_name", "last_name")
+            "email": user["email"],
+            "firstName": user["first_name"],
+            "lastName": user["last_name"],
+            "isAdmin": user["is_admin"],
+            "isStaff": user["is_staff"],
         }
 
         return Response(user_data)

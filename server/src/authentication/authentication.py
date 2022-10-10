@@ -4,7 +4,13 @@ from datetime import timedelta
 from os import environ
 
 from jwt import decode
-from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError, ImmatureSignatureError, DecodeError
+from jwt.exceptions import (
+    ExpiredSignatureError,
+    InvalidSignatureError,
+    ImmatureSignatureError,
+    DecodeError
+)
+from rest_framework.permissions import BasePermission
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authentication import BaseAuthentication
 
@@ -17,7 +23,12 @@ EXPIRATION_TIME = timedelta(days=4)
 OTP_SECRET = environ["otpSecret"]
 OTP_VALIDITY = 5
 
-JWT_EXCEPTIONS = (ExpiredSignatureError, InvalidSignatureError, ImmatureSignatureError, DecodeError)
+JWT_EXCEPTIONS = (
+    ExpiredSignatureError,
+    InvalidSignatureError,
+    ImmatureSignatureError,
+    DecodeError
+)
 HTTP_SECURE = False
 
 
@@ -31,11 +42,40 @@ class UserAuthentication(BaseAuthentication):
 
     def authenticate(self, request):
         try:
-            payload = decode(token := request.COOKIES.get("jwt"), SECRET, algorithms=[ALGORITHM])
+            payload = decode(
+                token := request.COOKIES.get("jwt"),
+                SECRET,
+                algorithms=[ALGORITHM]
+            )
         except JWT_EXCEPTIONS as exceptiom:
             raise AuthenticationFailed from exceptiom
 
-        if not User.objects.filter(id=payload["id"]).exists():
+        if not User.objects.filter(email=payload["id"]).exists():
             raise AuthenticationFailed
 
-        return User.objects.get(id=payload["id"]), token
+        return User.objects.get(email=payload["id"]), token
+
+
+class IsEmployee(BasePermission):
+    """
+    Checks if a user is an authenticated employee
+    """
+    @staticmethod
+    def has_permission(request, view=None):
+        user = get_user(request)
+        return bool(user)
+
+
+def get_user(request):
+    try:
+        payload = decode(
+            request.COOKIES.get("jwt"),
+            SECRET,
+            algorithms=[ALGORITHM]
+        )
+        user = User.objects.get(email=payload["id"])
+
+        return user
+
+    except (KeyError, *JWT_EXCEPTIONS):
+        return False
