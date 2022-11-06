@@ -158,7 +158,7 @@ class Util:
             value=value,
             expires=expires,
             httponly=True,
-            samesite="None",
+            samesite="None" if _HTTP_SECURE else "Strict",
             secure=_HTTP_SECURE,
         )
         return response
