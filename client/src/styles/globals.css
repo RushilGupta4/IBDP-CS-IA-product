@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './Variables.scss';
+/* @import './Variables.scss'; */
 
 html {
   scroll-behavior: smooth;
   @apply bg-gray-50;
-  //background-color: $background-primary;
+  /* //background-color: $background-primary; */
 }
 
 #__next {

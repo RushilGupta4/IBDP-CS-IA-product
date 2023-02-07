@@ -14,3 +14,16 @@ export const apiAuthRoutes = {
   getUser: `${apiAuthRoute}/user`,
   resendOtp: `${apiAuthRoute}/resend-otp`
 };
+
+
+const accountsKey = 'accounts';
+const apiAccountRoute = `${apiBasePath}/${accountsKey}`;
+export const apiAccountRoutes = {
+  seeHallOfFame: `${apiAccountRoute}/see-hall-of-fame`,
+  updateHallOfFame : `${apiAccountRoute}/update-hall-of-fame`,
+  employees : `${apiAccountRoute}/employees`,
+  seeAttendance : `${apiAccountRoute}/see-attendance`,
+  markAttendance : `${apiAccountRoute}/mark-attendance`,
+  leaveApplication: `${apiAccountRoute}/leave-application`,
+  seeLeaveApplication: `${apiAccountRoute}/see-leave-application`,
+};

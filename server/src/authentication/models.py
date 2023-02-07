@@ -3,27 +3,19 @@
 from uuid import uuid4
 
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractUser,
-    BaseUserManager
-)
-from django.contrib.auth.password_validation import (
-    get_default_password_validators
-)
-from rest_framework.exceptions import (
-    AuthenticationFailed
-)
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.password_validation import get_default_password_validators
+from rest_framework.exceptions import AuthenticationFailed
 
 
 class UserManager(BaseUserManager):
     """User manager which manages the registration of super and normal users"""
+
     def create_user(self, email, password, first_name, last_name):
         """Creates a normal user"""
         self._validate_user(email, password)
 
-        user = self.model(
-            email=self.normalize_email(email)
-        )
+        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.first_name = first_name
         user.last_name = last_name
@@ -37,9 +29,7 @@ class UserManager(BaseUserManager):
         """Creates a superuser"""
         self._validate_user(email, password)
 
-        user = self.model(
-            email=self.normalize_email(email)
-        )
+        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.first_name = first_name
         user.last_name = last_name
@@ -86,10 +76,10 @@ class User(AbstractUser):
 
 class OTP(models.Model):
     """OTP model which stores the details of an otp and links it to a user"""
+
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     secret = models.CharField(max_length=255)
     exp_minutes = models.IntegerField(null=False)
     done = models.BooleanField(default=False)
-

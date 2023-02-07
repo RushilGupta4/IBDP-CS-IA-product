@@ -1,4 +1,4 @@
-import Link from '../components/Utils/Link';
+import Link from 'next/link';
 import { useState } from 'react';
 import {
     login as loginUser,
@@ -59,11 +59,9 @@ const LoginPrompt = ({ onLogin, message, loading }) => {
                     Forgot your password?{' '}
                     <Link
                         href={'/forgot-password'}
-                        className="text-sm font-medium leading-none underline text-gray-800 cursor-pointer"
                         aria-label="Forgot Password"
                     >
-                        {' '}
-                        Forgot Password
+                        <a className="text-sm font-medium leading-none underline text-gray-800 cursor-pointer">Forgot Password</a>
                     </Link>
                 </p>
 

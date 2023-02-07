@@ -10,7 +10,7 @@ const useUser = () => {
   });
 
   const loading = !data && !error;
-  const loggedIn = !error && data;
+  const loggedIn = Boolean(!error && data);
 
   return {
     loading,

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
 
+
 const useAxiosData = (modifyData) => {
     const [data, setData] = useState({
         loading: false,
@@ -9,11 +10,11 @@ const useAxiosData = (modifyData) => {
     });
 
     const makeRequest = (request) => {
-        setData({
+        setData(old => ({
+            ...old,
             loading: true,
-            data: undefined,
             error: false,
-        });
+        }));
 
         request
             .then((resp) => {

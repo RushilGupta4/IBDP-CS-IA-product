@@ -7,7 +7,7 @@ function EmployeePage({ children }) {
     const auth = useUser();
     const router = useRouter();
 
-    if (!auth.loading && !(auth.loggedIn && auth.isAdmin)) {
+    if (!auth.loading && auth.loggedIn && auth.user.isAdmin) {
         router.push('/');
         return <Loading />;
     }

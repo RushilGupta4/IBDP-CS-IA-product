@@ -98,5 +98,5 @@ function Register() {
   );
 }
 
-Register.forAnonymous = true;
+Register.forAdmin = true;
 export default Register;

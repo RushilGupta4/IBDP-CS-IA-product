@@ -1,11 +1,11 @@
-import '../styles/globals.scss';
+import '../styles/globals.css';
 import Layout from '../components/UI/Layout';
 import AdminPage from '../components/Auth/AdminPage';
 import EmployeePage from '../components/Auth/EmployeePage';
+import AuthPage from '../components/Auth/AuthPage';
 import AnonymousPage from '../components/Auth/AnonymousPage';
 import Head from 'next/head'
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
 
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -15,7 +15,6 @@ function MyApp({ Component, pageProps }) {
   const forAdmin = Component.forAdmin;
   const forEmployee = Component.forEmployee;
   const forAnonymous = Component.forAnonymous;
-  const router = useRouter();
 
   let ogName = Component.name;
   let name = [ogName.charAt(0)];
@@ -45,7 +44,11 @@ function MyApp({ Component, pageProps }) {
         <title>{name} | CSIA</title>
       </Head>
       {
-        forAdmin ? (
+        (forAdmin && forEmployee) ? (
+          <AuthPage>
+            <Component {...pageProps} />
+          </AuthPage>
+        ) : forAdmin ? (
           <AdminPage>
             <Component {...pageProps} />
           </AdminPage>

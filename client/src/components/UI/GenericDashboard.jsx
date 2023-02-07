@@ -26,7 +26,7 @@ function Item({ img, text, to }) {
 function Dashboard({ items }) {
     return (
         <div className="flex flex-col items-center justify-center my-auto flex-grow">
-            <Card className={"!w-3/5 grid grid-cols-3 grid-rows-2 justify-items-center gap-10 !p-14"}>
+            <Card className={"!w-3/5 grid grid-cols-1 md:grid-cols-3 justify-items-center gap-5 md:gap-10 !p-5 md:!p-14"}>
                 {
                     items.map(item =>
                         <Item

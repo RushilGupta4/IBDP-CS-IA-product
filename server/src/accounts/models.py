@@ -7,17 +7,6 @@ User = get_user_model()
 
 
 class LeaveApplication(models.Model):
-    TYPE = (
-        (0, "casual"),
-        (1, "vacation"),
-        (2, "medical"),
-        (3, "maternity"),
-        (4, "paternity"),
-        (5, "sabbatical"),
-        (6, "bereavement"),
-        (7, "other"),
-    )
-
     DECISION = (
         (0, "rejected"),
         (1, "pending"),
@@ -25,7 +14,6 @@ class LeaveApplication(models.Model):
     )
 
     id = models.UUIDField(primary_key=True, default=_uuid4, editable=False)
-    type = models.IntegerField(choices=TYPE, null=False)
     employee = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     created_at = models.DateField(auto_now_add=True, null=False)
     start_date = models.DateField(null=False)
@@ -37,14 +25,11 @@ class LeaveApplication(models.Model):
 
 class EmployeeAttendance(models.Model):
     """Employee Attendance model which stores the employees' attendance"""
-    class Meta:
-        unique_together = (('date', 'employee'),)
 
-    STATUS = (
-        (0, "Absent"),
-        (1, "Not Expected"),
-        (2, "Present")
-    )
+    class Meta:
+        unique_together = (("date", "employee"),)
+
+    STATUS = ((0, "Absent"), (1, "Not Expected"), (2, "Present"))
 
     employee = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     date = models.DateField(null=False)
@@ -53,8 +38,9 @@ class EmployeeAttendance(models.Model):
 
 class HallOfFame(models.Model):
     """Employee Attendance model which stores the employees' attendance"""
+
     class Meta:
-        unique_together = (('month', 'year'),)
+        unique_together = (("month", "year"),)
 
     employee = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     month = models.IntegerField(null=False)

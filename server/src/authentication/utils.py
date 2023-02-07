@@ -10,8 +10,7 @@ from jwt import encode
 from pytz import UTC
 from pyotp import random_base32, TOTP
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
-from django.contrib.auth.password_validation import \
-    get_default_password_validators
+from django.contrib.auth.password_validation import get_default_password_validators
 from smtplib import SMTP as _SMTP
 from urllib.parse import quote as _quote, urlencode as _urlencode
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
@@ -29,7 +28,7 @@ from .authentication import (
 
 
 class _EmailUtils:
-    _GOOGLE_ACCOUNTS_BASE_URL = 'https://accounts.google.com'
+    _GOOGLE_ACCOUNTS_BASE_URL = "https://accounts.google.com"
     _REDIRECT_URI = "https://developers.google.com/oauthplayground"
 
     _FROM_EMAIL = environ.get("emailAddress")
@@ -44,77 +43,74 @@ class _EmailUtils:
     def _send_mail(self, to, subject, body):
         access_token, expires_in = self._refresh_authorization()
         auth_string = self._generate_oauth2_string(
-            self._FROM_EMAIL,
-            access_token,
-            as_base64=True
+            self._FROM_EMAIL, access_token, as_base64=True
         )
         body = body.replace("\n", "<br/>")
 
-        msg = _MIMEMultipart('related')
-        msg['Subject'] = subject
-        msg['From'] = self._FROM_EMAIL
-        msg['To'] = to
-        msg.preamble = 'This is a multi-part message in MIME format.'
-        msg_alternative = _MIMEMultipart('alternative')
+        msg = _MIMEMultipart("related")
+        msg["Subject"] = subject
+        msg["From"] = self._FROM_EMAIL
+        msg["To"] = to
+        msg.preamble = "This is a multi-part message in MIME format."
+        msg_alternative = _MIMEMultipart("alternative")
         msg.attach(msg_alternative)
         part_text = _MIMEText(
-            _html_fromstring(body).text_content().encode('utf-8'),
-            'plain',
-            _charset='utf-8'
+            _html_fromstring(body).text_content().encode("utf-8"),
+            "plain",
+            _charset="utf-8",
         )
-        part_html = _MIMEText(body.encode('utf-8'), 'html', _charset='utf-8')
+        part_html = _MIMEText(body.encode("utf-8"), "html", _charset="utf-8")
         msg_alternative.attach(part_text)
         msg_alternative.attach(part_html)
 
-        server = _SMTP('smtp.gmail.com:587')
+        server = _SMTP("smtp.gmail.com:587")
         server.ehlo(self._GOOGLE_CLIENT_ID)
         server.starttls()
-        server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
+        server.docmd("AUTH", "XOAUTH2 " + auth_string)
         server.sendmail(self._FROM_EMAIL, to, msg.as_string())
         server.quit()
 
     def _refresh_authorization(self):
         params = {
-            'client_id': self._GOOGLE_CLIENT_ID,
-            'client_secret': self._GOOGLE_CLIENT_SECRET,
-            'refresh_token': self._GOOGLE_REFRESH_TOKEN,
-            'grant_type': 'refresh_token',
+            "client_id": self._GOOGLE_CLIENT_ID,
+            "client_secret": self._GOOGLE_CLIENT_SECRET,
+            "refresh_token": self._GOOGLE_REFRESH_TOKEN,
+            "grant_type": "refresh_token",
         }
         request_url = f"{self._GOOGLE_ACCOUNTS_BASE_URL}/o/oauth2/token"
         response = _post(request_url, params=_urlencode(params))
         response = response.json()
-        return response['access_token'], response['expires_in']
+        return response["access_token"], response["expires_in"]
 
     @staticmethod
     def _generate_oauth2_string(username, access_token, as_base64=False):
-        auth_string = 'user=%s\1auth=Bearer %s\1\1' % (username, access_token)
+        auth_string = "user=%s\1auth=Bearer %s\1\1" % (username, access_token)
         if not as_base64:
             return as_base64
-        return _b64encode(auth_string.encode('ascii')).decode('ascii')
+        return _b64encode(auth_string.encode("ascii")).decode("ascii")
 
     @staticmethod
     def _url_format_params(params):
         param_fragments = []
         for param in sorted(params.items(), key=lambda x: x[0]):
-            param_fragments.append(
-                '%s=%s' % (param[0], _quote(param[1], safe='~-._'))
-            )
-        return '&'.join(param_fragments)
+            param_fragments.append("%s=%s" % (param[0], _quote(param[1], safe="~-._")))
+        return "&".join(param_fragments)
 
 
 class Util:
     """Util functions"""
+
     @staticmethod
     def send_otp_email(name, otp, email):
         """Send an email which proved the OTP for a user to login"""
         data = {
             "subject": "Email Authentication",
             "body": f"Hi {name},\n\nPlease use following OTP to login: {otp}"
-                    f"\n\n\nDo not reply to this email directly. "
-                    f"You are receiving this email because there "
-                    f"was a login attempt from a new browser or device. "
-                    f"If you did not make this request, you are "
-                    f"strongly advised to change your password.",
+            f"\n\n\nDo not reply to this email directly. "
+            f"You are receiving this email because there "
+            f"was a login attempt from a new browser or device. "
+            f"If you did not make this request, you are "
+            f"strongly advised to change your password.",
             "to": email,
         }
         EmailUtils.send_mail(**data)
@@ -143,16 +139,11 @@ class Util:
         }
         token = encode(payload, secret, algorithm=algorithm)
 
-        return Util.set_http_cookie(
-            response,
-            key="jwt",
-            value=token,
-            expires=exp_time
-        )
+        return Util.set_http_cookie(response, key="jwt", value=token, expires=exp_time)
 
     @staticmethod
     def set_http_cookie(response, key, value, expires):
-        """Sets a http cookie """
+        """Sets a http cookie"""
         response.set_cookie(
             key=key,
             value=value,
@@ -165,16 +156,16 @@ class Util:
 
     @staticmethod
     def delete_http_cookie(response, key):
-        """Delete a http cookie """
+        """Delete a http cookie"""
         response.set_cookie(
             key=key,
             httponly=True,
-            samesite="None",
+            samesite="None" if _HTTP_SECURE else "Strict",
             secure=_HTTP_SECURE,
             max_age=0,
-            path='/',
+            path="/",
             domain=None,
-            expires='Thu, 01-Jan-1970 00:00:00 GMT'
+            expires="Thu, 01-Jan-1970 00:00:00 GMT",
         )
         return response
 
@@ -208,7 +199,7 @@ class Util:
                 otp_id = jwt.decode(
                     request.COOKIES.get("login_token"),
                     _OTP_SECRET,
-                    algorithms=[_ALGORITHM]
+                    algorithms=[_ALGORITHM],
                 )["id"]
             except Exception as error:
                 raise AuthenticationFailed from error
@@ -219,14 +210,13 @@ class Util:
             otp = OTP.objects.get(id=otp_id)
             validity = timedelta(minutes=otp.exp_minutes)
 
-            if (
-                    (otp.created_at + validity).replace(tzinfo=UTC)
-                    < datetime.utcnow().replace(tzinfo=UTC) or otp.done
-            ):
+            if (otp.created_at + validity).replace(
+                tzinfo=UTC
+            ) < datetime.utcnow().replace(tzinfo=UTC) or otp.done:
                 raise ValidationError("OTP Expired, Please Try Again")
 
             secret = otp.secret
-            if not TOTP(secret).verify(otp_code, valid_window=10):
+            if not TOTP(secret).verify(otp_code, valid_window=2):
                 raise ValidationError
 
             otp.done = True
@@ -241,17 +231,13 @@ class Util:
     def send_otp(user, email, response):
         """Creates and sends an OTP to the user's email"""
         otp_code, token = Util.create_otp(user)
-        Util.send_otp_email(
-            f"{user.first_name} {user.last_name}",
-            otp_code,
-            email
-        )
+        Util.send_otp_email(f"{user.first_name} {user.last_name}", otp_code, email)
 
         response = Util.set_http_cookie(
             response=response,
             key="login_token",
             value=token,
-            expires=datetime.utcnow() + timedelta(minutes=_OTP_VALIDITY)
+            expires=datetime.utcnow() + timedelta(minutes=_OTP_VALIDITY),
         )
         return response
 

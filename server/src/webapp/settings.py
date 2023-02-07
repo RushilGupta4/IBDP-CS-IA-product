@@ -82,12 +82,14 @@ ASGI_APPLICATION = 'webapp.asgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": environ.get("dbName"),
-        "USER": environ.get("dbUser"),
-        "PASSWORD": environ.get("dbPwd"),
-        "HOST": environ.get("dbHost"),
-        "PORT": environ.get("dbPort"),
+        # "ENGINE": "django.db.backends.postgresql",
+        # "NAME": environ.get("dbName"),
+        # "USER": environ.get("dbUser"),
+        # "PASSWORD": environ.get("dbPwd"),
+        # "HOST": environ.get("dbHost"),
+        # "PORT": environ.get("dbPort"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
