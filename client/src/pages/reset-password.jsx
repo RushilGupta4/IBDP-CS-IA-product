@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import {
     resetPassword
 } from '../utils/userApi';
-import Loading from '../components/UI/Loading';
 import useAxiosData from '../hooks/useAxiosData';
+import Loading from '../components/UI/Loading';
 import { PasswordInput } from '../components/UI/Inputs';
 import Card from '../components/UI/Card';
 import { Header } from '../components/UI/Typography';

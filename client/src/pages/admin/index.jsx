@@ -3,7 +3,7 @@ import {
   CommonDashboardItems,
   AdminDashboardItems,
 } from "../../data/DashboardData";
-import Dashboard from "../../components/UI/Dashboard";
+import Dashboard from "../../components/UI/GenericDashboard";
 
 function AdminDashboard() {
   const items = CommonDashboardItems.concat(AdminDashboardItems);

@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import mimetypes
+import os
 from pathlib import Path
-from os import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,16 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)_02#jez(jr$7*gpi@!4r_nq&73+o9lil!#ede(q(ripq^t2'
+SECRET_KEY = os.environ.get("djangoSecret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("inProduction")) == 0
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,24 +78,20 @@ ASGI_APPLICATION = 'webapp.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        # "ENGINE": "django.db.backends.postgresql",
-        # "NAME": environ.get("dbName"),
-        # "USER": environ.get("dbUser"),
-        # "PASSWORD": environ.get("dbPwd"),
-        # "HOST": environ.get("dbHost"),
-        # "PORT": environ.get("dbPort"),
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("dbName"),
+        "USER": os.environ.get("dbUser"),
+        "PASSWORD": os.environ.get("dbPwd"),
+        "HOST": os.environ.get("dbHost"),
+        "PORT": os.environ.get("dbPort"),
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation'
@@ -118,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Kolkata'
@@ -130,12 +124,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "authentication.User"
 
@@ -162,11 +154,16 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
 
-NEXT_DOMAIN = environ.get("frontendDomain")
+NEXT_DOMAIN = os.environ.get("frontendDomain")
 
-EMAIL_HOST_USER = environ.get("emailAddress")
-EMAIL_HOST_PASSWORD = environ.get("emailPwd")
+EMAIL_HOST_USER = os.environ.get("emailAddress")
+EMAIL_HOST_PASSWORD = os.environ.get("emailPwd")
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = ["http://localhost"]
+
+
+for _type in ["css", "html", "js"]:
+    for _ext in [".css", ".html", ".js"]:
+        mimetypes.add_type(f"text/{_type}", _ext, False)

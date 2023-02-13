@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import CheckboxDropdown from './CheckboxDropdown';
+import CheckboxDropdown from 'components/UI/CheckboxDropdown';
 import propTypes from 'prop-types';
 
 const RenderRow = ({ keys, data, index, generateClassName }) => {

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   register,
 } from '../utils/userApi';
-import Loading from '../components/UI/Loading';
 import useAxiosData from '../hooks/useAxiosData';
 import { TextInput } from '../components/UI/Inputs';
 import Card from '../components/UI/Card';

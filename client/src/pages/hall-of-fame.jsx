@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import Card from "../components/UI/Card";
-import useAxiosData from "../hooks/useAxiosData";
+import React from "react";
 import axios from "axios";
+import useAxiosData from "../hooks/useAxiosData";
 import { apiAccountRoutes } from "../data/Routes";
+import Card from "../components/UI/Card";
 import Button from "../components/UI/Button";
 
 const getHallOfFame = async ({ month, year }) => {

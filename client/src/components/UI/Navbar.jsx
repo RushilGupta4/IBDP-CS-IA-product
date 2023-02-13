@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import useUser from "../../hooks/useUser";
 import { useRouter } from "next/router";
-import NavLink from "../Utils/Navlink";
 import Link from "next/link";
-import { logout } from "../../utils/userApi";
 import Image from "next/image";
+import NavLink from "../Utils/Navlink";
+import { logout } from "../../utils/userApi";
+import useUser from "../../hooks/useUser";
 import styles from "../../styles/Navbar.module.css";
 
 // This is used to be easily able to change the list element

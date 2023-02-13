@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../styles/Home.module.scss';
 import { useSpring, animated, config } from 'react-spring';
+import styles from '../styles/Home.module.scss';
 
 function Home() {
   const animationStyle = useSpring({

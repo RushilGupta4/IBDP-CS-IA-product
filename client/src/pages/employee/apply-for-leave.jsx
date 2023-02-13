@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "../../components/UI/Card";
-import useAxiosData from "../../hooks/useAxiosData";
-import { apiAccountRoutes } from "../../data/Routes";
+import React, { useState, useRef } from "react";
 import axios from "axios";
+import { apiAccountRoutes } from "../../data/Routes";
+import useAxiosData from "../../hooks/useAxiosData";
+import Card from "../../components/UI/Card";
 import Button from "../../components/UI/Button";
 
 const Input = ({ labelText, value, inputType, onchange, refObj }) => {

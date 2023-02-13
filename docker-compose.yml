@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  csia-db:
+    image: postgres:15.2
+    volumes:
+      - ~/csia/postgresql/var:/var/lib/postgresql
+    environment:
+      TZ: "Asia/Kolkata"
+      POSTGRES_DB: $dbName
+      POSTGRES_USER: $dbUser
+      POSTGRES_PASSWORD: $dbPwd
+    restart: always
+    container_name: csia-db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      timeout: 5s
+      retries: 20
+
+  frontend:
+    build: ./client
+    ports:
+      - "80:80"
+    image: app:csia-frontend
+    container_name: csia-frontend
+    command: bash -c "yarn start"
+
+  backend:
+    build: ./server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/csia/app/static:/server/src/static
+    image: app:csia-backend
+    container_name: csia-backend
+    command: bash -c "../venv/bin/python manage.py migrate && ../venv/bin/python manage.py runserver 0.0.0.0:8000"
+    environment:
+      TZ: "Asia/Kolkata"
+      PYTHONUNBUFFERED: 1
+      frontendDomain: $frontendDomain
+      emailAddress: $emailAddress
+      emailClientId: $emailClientId
+      emailClientSecret: $emailClientSecret
+      emailRefreshToken: $emailRefreshToken
+      djangoSecret: $djangoSecret
+      jwtSecret: $jwtSecret
+      otpSecret: $otpSecret
+      dbUser: $dbUser
+      dbPwd: $dbPwd
+      dbName: $dbName
+      dbPort: $dbPort
+      dbHost: csia-db
+      inProduction: 0
+
+    restart: always
+    depends_on:
+      csia-db:
+        condition: service_healthy

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import Card from "../../components/UI/Card";
-import useAxiosData from "../../hooks/useAxiosData";
 import axios from "axios";
+import useAxiosData from "../../hooks/useAxiosData";
 import { apiAccountRoutes } from "../../data/Routes";
 import Button from "../../components/UI/Button";
+import Card from "../../components/UI/Card";
 
 const Application = ({ application }) => {
   const buttonClass = `text-sm font-semibold leading-none border border-black rounded w-2/5 mx-1 py-2 md:w-1/5 md:ml-4`;

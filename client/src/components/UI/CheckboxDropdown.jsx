@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from './CheckboxDropdown.module.scss';
+import styles from 'components/UI/CheckboxDropdown.module.scss';
 import { BsTriangleFill } from 'react-icons/bs';
-import Button from './Button';
+import Button from 'components/UI/Button';
 
 function CheckboxDropdown({ data, setData, className }) {
   const [open, setOpen] = useState(false);
