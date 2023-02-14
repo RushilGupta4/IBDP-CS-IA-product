@@ -3,7 +3,7 @@ services:
   csia-db:
     image: postgres:15.2
     volumes:
-      - ~/csia/postgresql/var:/var/lib/postgresql
+      - ~/csia/postgresql/var:/var/lib/postgresql/data
     environment:
       TZ: "Asia/Kolkata"
       POSTGRES_DB: $dbName
@@ -12,7 +12,7 @@ services:
     restart: always
     container_name: csia-db
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready", "-u", "{$dbUser}" ]
       timeout: 5s
       retries: 20
 
