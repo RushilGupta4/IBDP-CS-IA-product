@@ -73,16 +73,7 @@ const Input = ({ labelText, value, inputType, onchange }) => {
 };
 
 function SeeAttendance() {
-  const [employees, setEmployees] = useAxiosData();
   const [attendance, setAttendance] = useAxiosData();
-
-  const getEmplyoees = () => {
-    return axios.get(apiAccountRoutes.employees);
-  };
-
-  if (!employees.data && !employees.loading) {
-    setEmployees(getEmplyoees());
-  }
 
   const [toDateVal, setToDateVal] = useState("");
   const [fromDateVal, setFromDateVal] = useState("");

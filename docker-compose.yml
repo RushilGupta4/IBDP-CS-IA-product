@@ -23,6 +23,7 @@ services:
     image: app:csia-frontend
     container_name: csia-frontend
     command: bash -c "yarn start"
+    restart: always
 
   backend:
     build: ./server

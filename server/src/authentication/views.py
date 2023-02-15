@@ -168,6 +168,9 @@ class ResetPassword(APIView):
             re_password = request.data["rePassword"]
             token = request.data["token"]
             user_email = force_str(urlsafe_base64_decode(request.data["id"]))
+            if not User.objects.filter(email=user_email).exists():
+                raise AuthenticationFailed
+                
             user = User.objects.get(email=user_email)
 
             if not default_token_generator.check_token(user, token):

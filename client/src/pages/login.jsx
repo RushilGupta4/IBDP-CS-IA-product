@@ -5,6 +5,7 @@ import {
     login as loginUser,
     validateLogin as validateUserLogin,
 } from '../utils/userApi';
+import { apiAuthRoutes } from "../data/Routes";
 import useAxiosData from '../hooks/useAxiosData';
 import useUser from '../hooks/useUser';
 import { TextInput, PasswordInput } from '../components/UI/Inputs';
@@ -12,7 +13,6 @@ import Loading from '../components/UI/Loading';
 import Card from '../components/UI/Card';
 import { Header } from '../components/UI/Typography';
 import Button from '../components/UI/Button';
-import { apiAuthRoutes } from "../data/Routes";
 
 const LoginPrompt = ({ onLogin, message, loading }) => {
     const [email, setEmail] = useState('');
