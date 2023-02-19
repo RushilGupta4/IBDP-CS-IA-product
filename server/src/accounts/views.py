@@ -240,7 +240,7 @@ class LeaveApplicationView(APIView):
                     "employeeName": f"{user.first_name} {user.last_name}",
                     "createdAt": app["created_at"].strftime("%d/%m/%Y"),
                     "startDate": app["start_date"].strftime("%d/%m/%Y"),
-                    "endDate": app["start_date"].strftime("%d/%m/%Y"),
+                    "endDate": app["end_date"].strftime("%d/%m/%Y"),
                     "reason": app["reason"],
                     "decision": self.DECISIONS[app["decision"]],
                     "decisionDate": decision_date,
@@ -413,7 +413,7 @@ class SeeLeaveApplicationView(APIView):
                     "employeeName": f"{user.first_name} {user.last_name}",
                     "createdAt": app["created_at"].strftime("%d/%m/%Y"),
                     "startDate": app["start_date"].strftime("%d/%m/%Y"),
-                    "endDate": app["start_date"].strftime("%d/%m/%Y"),
+                    "endDate": app["end_date"].strftime("%d/%m/%Y"),
                     "reason": app["reason"],
                     "decision": self.DECISIONS[app["decision"]].capitalize(),
                     "decisionDate": decision_date,
@@ -446,7 +446,7 @@ def _calculate_attendance_stats(employee, from_date, to_date, CHOICES):
         EmployeeAttendance.objects.filter(
             employee=employee, date__gte=from_date, date__lte=to_date
         )
-        .order_by("date")
+        .order_by("-date")
         .values()
     )
 

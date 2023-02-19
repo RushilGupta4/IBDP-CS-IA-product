@@ -202,10 +202,10 @@ class LoginView(APIView):
             email = request.data["email"]
             password = request.data["password"]
         except KeyError as exception:
-            raise ValidationError from exception
+            raise AuthenticationFailed from exception
 
         if not User.objects.filter(email=email).exists():
-            raise ValidationError("User not registered")
+            raise AuthenticationFailed("User not registered")
 
         user = User.objects.get(email=email)
         if not user.check_password(password):

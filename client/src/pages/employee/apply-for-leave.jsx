@@ -89,7 +89,7 @@ function PastApplications() {
       <Card className={"!w-4/5 md:!w-4/7 justify-items-center flex flex-col"}>
         <p className="text-1xl font-bold text-center mb-3" ref={msgRef} />
         <h1 className="text-2xl font-bold text-center">
-          Past Leave Applications
+          Apply for Leave
         </h1>
 
         <div className="w-11/12 py-5 my-2 px-2 md:px-8 lg:px-16 border rounded m-auto border-black">

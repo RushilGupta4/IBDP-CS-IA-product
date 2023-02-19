@@ -7,6 +7,7 @@ import { TextInput } from '../components/UI/Inputs';
 import Card from '../components/UI/Card';
 import { Header } from '../components/UI/Typography';
 import Button from '../components/UI/Button';
+import Loading from '../components/UI/Loading';
 
 
 const RegisterPrompt = ({ onRegister, registerData }) => {
