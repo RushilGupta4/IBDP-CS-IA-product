@@ -10,7 +10,7 @@ https://docs.docker.com/compose/install/
 <br/>
 
 ### Google OAuth2 Client
-The product used emails to send OTP to users. To do so, the `.env` file in the base directory contains the following 4 environment variables: `emailAddress`, `emailClientId`, `emailClientSecret`, `emailRefreshToken`. However, in the `.env` file provided, these variables will be left blank for security reasons. For the product to be functional, a Google OAuth2 client would be needed, with permissions to access a Gmail account. The following website can be as a guide:
+The product used emails to send OTP to users. To do so, the `.env` file in the base directory contains the following 4 environment variables: `emailAddress`, `emailClientId`, `emailClientSecret`, and `emailRefreshToken`. However, in the `.env` file provided, these variables will be left blank for security reasons. A Google OAuth2 client would be needed for the product to be functional, with permission to access a Gmail account. The following website can be used as a guide:
 <br/>
 https://developers.google.com/identity/protocols/oauth2
 
