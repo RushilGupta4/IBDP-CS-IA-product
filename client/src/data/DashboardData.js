@@ -38,7 +38,7 @@ export const AdminDashboardItems = [
 
 export const EmployeeDashboardItems = [
     {
-        name: "See Attendance",
+        name: "See Attendanace",
         img: "/images/see-attendance.png",
         to: "/employee/see-attendance",
     },
